@@ -2,25 +2,42 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Roll Bot</title>
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-  <!-- Sternen-Canvas -->
-  <canvas id="starsCanvas"></canvas>
-
-  <!-- Hauptinhalt -->
+  <div class="stars"></div>
   <div class="container">
-    <h1 class="title">ROLL BOT</h1>
+    <h1 class="title">Roll Bot</h1>
+    <p class="subtitle">Your galactic Discord RNG experience</p>
+    <div class="input-box">
+      <label for="roleId">Wait! What should be your administrator role ID?</label><br>
+      <input type="text" id="roleId" placeholder="Enter Role ID..." />
+      <input type="text" id="guildId" placeholder="Enter Server ID..." />
+    </div>
     <div class="buttons">
-      <a href="https://discord.com/oauth2/authorize?client_id=1397340368479195187&permissions=8&integration_type=0&scope=bot" target="_blank">⭐ Add to Server</a>
-      <a href="terms-of-service.html">📜 Terms of Service</a>
-      <a href="privacy-policy.html">🔐 Privacy Policy</a>
+      <button class="btn" onclick="saveRole()">Add to Server</button>
+      <a class="btn" href="tos.html">Terms of Service</a>
+      <a class="btn" href="privacypolicy.html">Privacy Policy</a>
     </div>
   </div>
-
-  <!-- Sternen-Skript -->
-  <script src="stars.js"></script>
+  <script>
+    async function saveRole() {
+      const role = document.getElementById("roleId").value;
+      const guild = document.getElementById("guildId").value;
+      if (!role || !guild) {
+        alert("Please enter both Role ID and Server ID");
+        return;
+      }
+      await fetch("https://<YOUR-RAILWAY-URL>.up.railway.app/set_admin", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({role_id: role, guild_id: guild})
+      });
+      window.location.href = "https://discord.com/oauth2/authorize?client_id=1397340368479195187&permissions=8&integration_type=0&scope=bot";
+    }
+  </script>
 </body>
 </html>
+
